@@ -1,16 +1,16 @@
 require('dotenv').config();
 
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
-import * as Knex from 'knex';
-import * as morgan from 'morgan';
-import registerApi from './api';
-import { Model } from 'objection';
-import { HttpError } from './Errors';
+const bodyParser = require('body-parser');
+const express = require('express');
+const Knex = require('knex');
+const morgan = require('morgan');
+const { registerApi } = require('./api');
+const { Model } = require('objection');
+const { HttpError } = require('./Errors');
 
 // Initialize knex the SQL query builder.
 const knexConfig = require('../knexfile');
-export const knex = Knex(knexConfig.development);
+const knex = Knex(knexConfig.development);
 
 // Create or migrate the database:
 knex.migrate.latest();
@@ -29,7 +29,7 @@ const app = express()
 // Register our REST API.
 registerApi(router);
 
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err, req, res, next) => {
   if (err) {
     if (err instanceof HttpError) {
       res.status(err.statusCode).send({
@@ -51,3 +51,7 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log('Todo app listening at port %s', port);
 });
+
+module.exports = {
+  knex,
+};

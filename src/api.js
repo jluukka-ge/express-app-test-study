@@ -1,9 +1,8 @@
-import * as express from 'express';
-import User from './models/User';
-import Todo from './models/Todo';
-import { BadRequestError, NotFoundError } from './Errors';
+const { User } = require('./models/User');
+const { Todo } = require('./models/Todo');
+const { BadRequestError, NotFoundError } = require('./Errors');
 
-export default (router: express.Router) => {
+const registerApi = router => {
   router.get('/users', async (req, res) => {
     const users = await User.query();
     res.send(users);
@@ -15,11 +14,14 @@ export default (router: express.Router) => {
   });
 
   router.get('/todos/:id', async (req, res) => {
-    const id = req.query.id;
+    const id = req.params.id;
     if (!id || Number.isInteger(id)) throw new BadRequestError('Invalid TodoID!');
-
     const todo = await Todo.query().where({ id }).first();
     if (!todo) throw new NotFoundError('No such Todo!');
-    return todo;
+    res.send(todo);
   });
+};
+
+module.exports = {
+  registerApi,
 };
