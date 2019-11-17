@@ -18,7 +18,7 @@ exports.up = knex => {
 
       table.bigInteger('createdAt').notNullable().defaultTo(knex.fn.now());
       table.bigInteger('updatedAt').notNullable().defaultTo(knex.fn.now());
-      
+
       table
         .integer('userId')
         .unsigned()
