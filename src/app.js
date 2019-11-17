@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const Knex = require('knex');
 const morgan = require('morgan');
+const { getRoutes } = require('./routes');
 const { registerApi } = require('./api');
 const { Model } = require('objection');
-const { HttpError } = require('./Errors');
+const { getModels } = require('./models');
+const getPromiseRouter = require('express-promise-router');
 
 // Initialize knex the SQL query builder.
 const knexConfig = require('../knexfile');
@@ -18,34 +20,22 @@ knex.migrate.latest();
 // Bind the knex instance to the base Model class
 Model.knex(knex);
 
-// Unfortunately the express-promise-router types are borked. Just require():
-const router = require('express-promise-router')();
+// Get data models subclassed from this objection Model
+const models = getModels(Model);
+
+// Register our REST API.
+const routes = getRoutes(models);
+const router = registerApi({
+  router: getPromiseRouter(),
+  routes
+});
+
 const app = express()
   .use(bodyParser.json())
   .use(morgan('dev'))
   .use(router)
+  .use(routes.finalRoute)
   .set('json spaces', 2);
-
-// Register our REST API.
-registerApi(router);
-
-app.use((err, req, res, next) => {
-  if (err) {
-    if (err instanceof HttpError) {
-      res.status(err.statusCode).send({
-        status: err.statusCode,
-        message: err.message,
-      });
-    } else {
-      res.status(500).send({
-        status: 500,
-        message: 'An unexpected error occurred!',
-      });
-    }
-  } else {
-    next();
-  }
-});
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
