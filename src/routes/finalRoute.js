@@ -10,10 +10,11 @@ const getMessage = err => (err instanceof HttpError) ? err.message : DEFAULT.MES
 
 const getHandler = () => (err, req, res, next) => {
   if (err) {
+    console.error(err);
+
     const status = getStatusCode(err);
     const message = getMessage(err);
 
-    console.log(err);
     res.status(status).send({
       status,
       message,
