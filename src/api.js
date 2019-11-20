@@ -1,13 +1,17 @@
+const { authenticate } = require('./middleware');
+
 const registerApi = ({ router, routes }) => {
   const {
+    loginUser,
     getUsers,
     getTodos,
     getTodosById,
   } = routes;
 
-  router.get('/users', getUsers);
-  router.get('/todos', getTodos);
-  router.get('/todos/:id', getTodosById);
+  router.get('/login', loginUser);
+  router.get('/users', authenticate, getUsers);
+  router.get('/todos', authenticate, getTodos);
+  router.get('/todos/:id', authenticate, getTodosById);
 
   return router;
 };
