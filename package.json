@@ -3,9 +3,10 @@
   "version": "0.0.1-beta",
   "description": "A study on various test possibilities on a simple todo app REST api",
   "scripts": {
-    "setup": "npm install && npm run clean && knex migrate:latest && knex seed:run",
+    "setup": "npm install && npm run clean && npm run init-db",
     "test": "echo \"Tests have not been setup yet!\" && exit 0",
     "clean": "rimraf todos.db build",
+    "init-db": "knex migrate:latest && knex seed:run",
     "lint": "./node_modules/.bin/eslint ./src",
     "start": "node ./src/app.js",
     "clean-start": "npm run clean && npm run start",

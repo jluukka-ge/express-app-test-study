@@ -1,4 +1,7 @@
-const {USER_TABLE, TODO_TABLE} = require('./../constants/tables');
+const { USER_TABLE, TODO_TABLE } = require('./../constants/tables');
+const { hashPassword } = require('../src/accounts/password');
+
+const TEST_PASSWORD = 'test';
 
 const TODO_LIST = [
   {
@@ -14,20 +17,21 @@ const USER_LIST = [
   {
     username: 'pentti',
     name: 'Pentti',
-    lastName: 'Placeholder'
+    lastName: 'Placeholder',
   }, {
     username: 'milla',
     name: 'Milla',
-    lastName: 'Mallikas'
+    lastName: 'Mallikas',
   }, {
     username: 'kaija',
     name: 'Kaija',
-    lastName: 'Koodari'
+    lastName: 'Koodari',
   }
 ];
 
 exports.seed = async function (knex) {
-  await knex(USER_TABLE).insert(USER_LIST);
+  const { hash } = await hashPassword(TEST_PASSWORD);
+  await knex(USER_TABLE).insert(USER_LIST.map(user => ({ ...user, password: hash })));
   const users = await knex(USER_TABLE).select('*');
 
   const promises = users.map( user => {
