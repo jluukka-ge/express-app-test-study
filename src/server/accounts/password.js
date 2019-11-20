@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs');
-const { crypto } = require('../../constants');
+const { crypto } = require('../../../constants');
 
 /*
  * interface HashPasswordResult {

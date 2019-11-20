@@ -1,4 +1,4 @@
-const { tables } = require('../../constants');
+const { tables } = require('../../../constants');
 
 const defineTodo = BaseClass => {
   return class Todo extends BaseClass {

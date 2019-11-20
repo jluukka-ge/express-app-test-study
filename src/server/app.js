@@ -11,7 +11,7 @@ const { getModels } = require('./models');
 const getPromiseRouter = require('express-promise-router');
 
 // Initialize knex the SQL query builder.
-const knexConfig = require('../knexfile');
+const knexConfig = require('../../knexfile');
 const knex = Knex(knexConfig.development);
 
 // Create or migrate the database:

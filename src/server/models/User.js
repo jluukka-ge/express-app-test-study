@@ -1,4 +1,4 @@
-const { tables } = require('../../constants');
+const { tables } = require('../../../constants');
 
 const { propLens } = require('../utils/lenses');
 const { omit } = require('../utils/objects');

@@ -8,7 +8,7 @@
     "clean": "rimraf todos.db build",
     "init-db": "knex migrate:latest && knex seed:run",
     "lint": "./node_modules/.bin/eslint ./src",
-    "start": "node ./src/app.js",
+    "start": "node ./src/server/app.js",
     "clean-start": "npm run clean && npm run start",
     "start:watch": "nodemon --watch ./src --exec \"npm run start\""
   },
