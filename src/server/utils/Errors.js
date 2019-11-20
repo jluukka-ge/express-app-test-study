@@ -10,4 +10,5 @@ module.exports = {
   HttpError,
   NotFoundError: customHttpError(404),
   BadRequestError: customHttpError(400),
+  UnauthorizedError: customHttpError(401),
 };

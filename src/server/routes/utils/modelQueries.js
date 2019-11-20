@@ -1,4 +1,5 @@
 const getItemById = (Model, id) => Model.query().where({ id }).first();
+const getItemByProps = (Model, props) => Model.query().where(props).first();
 const getAllItems = Model => Model.query();
 
 const projectByLenses = lenses => data => {
@@ -16,6 +17,7 @@ const getAllWithProjection = async (Model, publicLenses) => {
 
 module.exports = {
   getItemById,
+  getItemByProps,
   getAllItems,
   projectByLenses,
   getAllWithProjection,

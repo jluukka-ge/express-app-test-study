@@ -8,7 +8,7 @@ const registerApi = ({ router, routes }) => {
     getTodosById,
   } = routes;
 
-  router.get('/login', loginUser);
+  router.post('/login', loginUser);
   router.get('/users', authenticate, getUsers);
   router.get('/todos', authenticate, getTodos);
   router.get('/todos/:id', authenticate, getTodosById);
