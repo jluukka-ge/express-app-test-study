@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const Knex = require('knex');
 const morgan = require('morgan');
-const { getRoutes } = require('./routes');
+const { getRoutes, getMiddleware } = require('./routes');
 const { registerApi } = require('./api');
 const { Model } = require('objection');
 const { getModels } = require('./models');
@@ -25,9 +25,11 @@ const models = getModels(Model);
 
 // Register our REST API.
 const routes = getRoutes(models);
+const middleware = getMiddleware(models);
 const router = registerApi({
   router: getPromiseRouter(),
-  routes
+  routes,
+  middleware,
 });
 
 const app = express()

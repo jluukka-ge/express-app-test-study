@@ -1,12 +1,14 @@
-const { authenticate } = require('./middleware');
-
-const registerApi = ({ router, routes }) => {
+const registerApi = ({ router, routes, middleware }) => {
   const {
     loginUser,
     getUsers,
     getTodos,
     getTodosById,
   } = routes;
+
+  const {
+    authenticate,
+  } = middleware;
 
   router.post('/login', loginUser);
   router.get('/users', authenticate, getUsers);
