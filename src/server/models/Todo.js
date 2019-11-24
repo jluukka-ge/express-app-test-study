@@ -1,7 +1,18 @@
 const { tables } = require('../../../constants');
 
+const { propLens } = require('../utils/lenses');
+
+const lenses = {
+  id: propLens('id'),
+  title: propLens('title'),
+  description:  propLens('description'),
+  userId: propLens('userId'),
+  createdAt: propLens('createdAt'),
+  updatedAt: propLens('updatedAt'),
+};
+
 const defineTodo = BaseClass => {
-  return class Todo extends BaseClass {
+  class Todo extends BaseClass {
     static get tableName() {
       return tables.TODO_TABLE;
     }
@@ -19,9 +30,12 @@ const defineTodo = BaseClass => {
         },
       };
     }
-  };
+  }
+  Todo.lenses = lenses;
+  return Todo;
 };
 
 module.exports = {
-  defineTodo
+  lenses,
+  defineTodo,
 };

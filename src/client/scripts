@@ -1,0 +1,41 @@
+const { getClient } = require('./src/client');
+const client = getClient('http://localhost:8080');
+
+
+const tokenPromise = client.login('pentti', 'test').then(({ data }) => data);
+
+const printTodos = () => tokenPromise.then(
+  token => client.getTodos(token)
+).then(
+  ({ data }) => console.log(data)
+);
+
+const printUsers = () => tokenPromise.then(
+  token => client.getUsers(token)
+).then(
+  ({ data }) => console.log(data)
+);
+
+const printTodoById = id => tokenPromise.then(
+  token => client.getTodos(token, id)
+).then(
+  ({ data }) => console.log(data)
+);
+
+const createTodo = data => tokenPromise.then(
+  token => client.createTodo(token, data)
+).then(
+  ({ data }) => console.log(data)
+);
+
+const updateTodoById = (id, data) => tokenPromise.then(
+  token => client.updateTodoById(token, id, data)
+).then(
+  ({ data }) => console.log(data)
+);
+
+const deleteTodoById = (id, data) => tokenPromise.then(
+  token => client.deleteTodoById(token, id)
+).then(
+  ({ data }) => console.log(data)
+);

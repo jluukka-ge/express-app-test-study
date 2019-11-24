@@ -3,19 +3,25 @@ const { getHandler: loginUser } = require('./loginUser');
 const { getHandler: getUsers } = require('./getUsers');
 const { getHandler: getTodos } = require('./getTodos');
 const { getHandler: getTodoById } = require('./getTodoById');
+const { getHandler: createTodo } = require('./createTodo');
+const { getHandler: updateTodoById } = require('./updateTodoById');
+const { getHandler: deleteTodoById } = require('./deleteTodoById');
 
 const { getMiddleware: getAuthenticationMiddleware } = require('./middleware/authentication');
 
-const getRoutes = models => ({
-  finalRoute: finalRoute(models),
-  loginUser: loginUser(models),
-  getUsers: getUsers(models),
-  getTodos: getTodos(models),
-  getTodosById: getTodoById(models),
+const getRoutes = storage => ({
+  finalRoute: finalRoute(storage),
+  loginUser: loginUser(storage),
+  getUsers: getUsers(storage),
+  getTodos: getTodos(storage),
+  getTodosById: getTodoById(storage),
+  createTodo: createTodo(storage),
+  updateTodoById: updateTodoById(storage),
+  deleteTodoById: deleteTodoById(storage),
 });
 
-const getMiddleware = models => ({
-  authenticate: getAuthenticationMiddleware(models),
+const getMiddleware = storage => ({
+  authenticate: getAuthenticationMiddleware(storage),
 });
 
 module.exports = {

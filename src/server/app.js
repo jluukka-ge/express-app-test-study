@@ -8,6 +8,7 @@ const { getRoutes, getMiddleware } = require('./routes');
 const { registerApi } = require('./api');
 const { Model } = require('objection');
 const { getModels } = require('./models');
+const { getStorage } = require('./dataStorage');
 const getPromiseRouter = require('express-promise-router');
 
 // Initialize knex the SQL query builder.
@@ -22,10 +23,11 @@ Model.knex(knex);
 
 // Get data models subclassed from this objection Model
 const models = getModels(Model);
+const storage = getStorage(models);
 
 // Register our REST API.
-const routes = getRoutes(models);
-const middleware = getMiddleware(models);
+const routes = getRoutes(storage);
+const middleware = getMiddleware(storage);
 const router = registerApi({
   router: getPromiseRouter(),
   routes,

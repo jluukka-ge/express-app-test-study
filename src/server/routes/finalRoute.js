@@ -1,4 +1,4 @@
-const { HttpError } = require('../utils/Errors');
+const { HttpError } = require('./utils/Errors');
 
 const DEFAULT = {
   STATUS_CODE: 500,

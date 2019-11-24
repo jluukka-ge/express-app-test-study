@@ -1,7 +1,6 @@
-const { getAllItems } = require('./utils/modelQueries');
-
-const getHandler = ({ Todo }) => async (req, res) => {
-  const todos = await getAllItems(Todo).where({ userId: req.__user.id });
+const getHandler = storage => async (req, res) => {
+  const { getTodos } = storage(req.__user);
+  const todos = await getTodos();
   res.send(todos);
 };
 

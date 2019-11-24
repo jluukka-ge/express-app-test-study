@@ -4,6 +4,9 @@ const registerApi = ({ router, routes, middleware }) => {
     getUsers,
     getTodos,
     getTodosById,
+    createTodo,
+    updateTodoById,
+    deleteTodoById,
   } = routes;
 
   const {
@@ -14,6 +17,9 @@ const registerApi = ({ router, routes, middleware }) => {
   router.get('/users', authenticate, getUsers);
   router.get('/todos', authenticate, getTodos);
   router.get('/todos/:id', authenticate, getTodosById);
+  router.post('/todos', authenticate, createTodo);
+  router.put('/todos/:id', authenticate, updateTodoById);
+  router.delete('/todos/:id', authenticate, deleteTodoById);
 
   return router;
 };

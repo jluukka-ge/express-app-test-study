@@ -9,12 +9,14 @@ const lenses = {
   name:  propLens('name'),
   lastname: propLens('lastName'),
   password: propLens('password'),
+  createdAt: propLens('createdAt'),
+  updatedAt: propLens('updatedAt'),
 };
 
 const publicLenses = omit(lenses, 'password');
 
 const defineUser = BaseClass => {
-  return class User extends BaseClass {
+  class User extends BaseClass {
     static get tableName() {
       return tables.USER_TABLE;
     }
@@ -31,7 +33,10 @@ const defineUser = BaseClass => {
         },
       };
     }
-  };
+  }
+  User.lenses = lenses;
+  User.publicLenses = publicLenses;
+  return User;
 };
 
 module.exports = {

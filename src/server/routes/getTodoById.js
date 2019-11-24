@@ -1,23 +1,23 @@
-const {
-  BadRequestError,
-  NotFoundError,
-} = require('../utils/Errors');
+const { BadRequestError, NotFoundError } = require('./utils/Errors');
 
-const { getItemById } = require('./utils/modelQueries');
+const requestIsValid = id => !!id && !Number.isInteger(id);
+const resultIsValid = todo => !!todo;
 
-const queryIsValid = id => id && !Number.isInteger(id);
-const resultIsValid = todo => !todo;
-
-const getHandler = ({ Todo }) => async (req, res) => {
+const getHandler = storage => async (req, res) => {
+  const { getTodoById } = storage(req.__user);
   const { id } = req.params;
-  if (!queryIsValid(id)) throw new BadRequestError('Invalid TodoID!');
-  const todo = await getItemById(Todo, id).where({ userId: req.__user.id });
-  if (resultIsValid(todo)) throw new NotFoundError('No such Todo');
+
+  if (!requestIsValid(id)) throw new BadRequestError('Invalid TodoID!');
+
+  const todo = await getTodoById(id);
+
+  if (!resultIsValid(todo)) throw new NotFoundError('No such Todo');
+
   res.send(todo);
 };
 
 module.exports = {
-  queryIsValid,
+  requestIsValid,
   resultIsValid,
   getHandler,
 };

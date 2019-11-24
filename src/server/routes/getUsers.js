@@ -1,15 +1,7 @@
-const {
-  getAllItems,
-  projectByLenses,
-} = require('./utils/modelQueries');
-const { publicLenses } = require('../models/User');
-
-const publicLenseSet = Object.values(publicLenses);
-
-const getHandler = ({ User }) => async (req, res) => {
-  const users = await getAllItems(User);
-  const publicData = projectByLenses(publicLenseSet)(users);
-  res.send(publicData);
+const getHandler = storage => async (req, res) => {
+  const { getUsers } = storage(req.__user);
+  const users = await getUsers();
+  res.send(users);
 };
 
 module.exports = {
