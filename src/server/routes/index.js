@@ -9,19 +9,21 @@ const { getHandler: deleteTodoById } = require('./deleteTodoById');
 
 const { getMiddleware: getAuthenticationMiddleware } = require('./middleware/authentication');
 
-const getRoutes = storage => ({
-  finalRoute: finalRoute(storage),
-  loginUser: loginUser(storage),
-  getUsers: getUsers(storage),
-  getTodos: getTodos(storage),
-  getTodosById: getTodoById(storage),
-  createTodo: createTodo(storage),
-  updateTodoById: updateTodoById(storage),
-  deleteTodoById: deleteTodoById(storage),
+// Define routes, parameterized over storage implementation
+const getRoutes = getStorage => ({
+  finalRoute: finalRoute(getStorage),
+  loginUser: loginUser(getStorage),
+  getUsers: getUsers(getStorage),
+  getTodos: getTodos(getStorage),
+  getTodosById: getTodoById(getStorage),
+  createTodo: createTodo(getStorage),
+  updateTodoById: updateTodoById(getStorage),
+  deleteTodoById: deleteTodoById(getStorage),
 });
 
-const getMiddleware = storage => ({
-  authenticate: getAuthenticationMiddleware(storage),
+// Define middleware, parameterized over storage implementation
+const getMiddleware = getStorage => ({
+  authenticate: getAuthenticationMiddleware(getStorage),
 });
 
 module.exports = {

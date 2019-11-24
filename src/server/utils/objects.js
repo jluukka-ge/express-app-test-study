@@ -1,3 +1,7 @@
+/*
+ * Utility functions for wirking with objects declaratively.
+ */
+
 const omit = (object, ...props) => {
   const rest = props.reduce((acc, prop) => {
     const {

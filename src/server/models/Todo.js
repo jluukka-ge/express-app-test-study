@@ -2,6 +2,7 @@ const { tables } = require('../../../constants');
 
 const { propLens } = require('../utils/lenses');
 
+// Define lenses (accessors) for this data model
 const lenses = {
   id: propLens('id'),
   title: propLens('title'),
@@ -31,6 +32,7 @@ const defineTodo = BaseClass => {
       };
     }
   }
+  // Allow access to lenses through the data model class
   Todo.lenses = lenses;
   return Todo;
 };

@@ -1,3 +1,6 @@
+/*
+ * Map all domain routes to concrete middleware and routes
+ */
 const registerApi = ({ router, routes, middleware }) => {
   const {
     loginUser,

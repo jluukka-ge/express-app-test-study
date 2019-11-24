@@ -1,3 +1,7 @@
+/*
+ * A concrete implementation of persistent storage for the Todo app using Knex.
+ */
+
 const {
   createItem,
   getItemById,
@@ -8,6 +12,11 @@ const {
   currentTimestamp,
   restrictAccessByUser,
 } = require('./utils/modelQueries');
+
+/*
+ * Define each persistent storage action separately to enable unit testing each
+ * function in isolation.
+ */
 
 const createTodo = ({ Todo }, user) => data => {
   const { userId } = Todo.lenses;
@@ -56,7 +65,12 @@ const getUserByUsername = ({ User }) => async username => {
   return projectByLenses(publicLenseSet)(user);
 };
 
-const getStorage = models => user => {
+/*
+ * Produce methods for interacting with persistent storage. Parameterizing over
+ * user enables this storage implementation to handle data access restrictions
+ * and automatically supplementing userId value to input data
+ */
+const defineStorage = models => user => {
   return {
     createTodo: createTodo(models, user),
     getTodos: getTodos(models, user),
@@ -67,6 +81,8 @@ const getStorage = models => user => {
     getPasswordByUsername: getPasswordByUsername(models),
     getUserByUsername: getUserByUsername(models),
 
+    // Include models in export – they contain information about how to
+    // interact with data (e.g. lenses)
     models
   };
 };
@@ -81,5 +97,5 @@ module.exports = {
   getPasswordByUsername,
   getUserByUsername,
 
-  getStorage,
+  defineStorage,
 };

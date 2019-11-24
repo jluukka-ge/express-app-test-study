@@ -2,6 +2,7 @@ class HttpError extends Error {
   get statusCode() { return 500; }
 }
 
+// HTTP error factory method
 const customHttpError = statusCode => class extends HttpError {
   get statusCode() { return statusCode; }
 };

@@ -1,3 +1,7 @@
+/*
+ * Generic functions for wirking with Knex model queries
+ */
+
 const createItem = (Model, data) => Model.query().insert(data);
 
 const getItemById = (Model, id) => Model.query().findById(id).first();

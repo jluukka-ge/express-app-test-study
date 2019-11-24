@@ -3,8 +3,8 @@ const { BadRequestError, NotFoundError } = require('./utils/Errors');
 const requestIsValid = id => !!id && !Number.isInteger(id);
 const resultIsValid = todo => !!todo;
 
-const getHandler = storage => async (req, res) => {
-  const { getTodoById } = storage(req.__user);
+const getHandler = getStorage => async (req, res) => {
+  const { getTodoById } = getStorage(req.__user);
   const { id } = req.params;
 
   if (!requestIsValid(id)) throw new BadRequestError('Invalid TodoID!');

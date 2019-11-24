@@ -3,6 +3,7 @@ const { tables } = require('../../../constants');
 const { propLens } = require('../utils/lenses');
 const { omit } = require('../utils/objects');
 
+// Define lenses (accessors) for this data model
 const lenses = {
   id: propLens('id'),
   username: propLens('username'),
@@ -13,6 +14,9 @@ const lenses = {
   updatedAt: propLens('updatedAt'),
 };
 
+/*
+ * Define which data fields are safe to be passed around
+ */
 const publicLenses = omit(lenses, 'password');
 
 const defineUser = BaseClass => {
@@ -34,6 +38,7 @@ const defineUser = BaseClass => {
       };
     }
   }
+  // Allow access to lenses through the data model class
   User.lenses = lenses;
   User.publicLenses = publicLenses;
   return User;
