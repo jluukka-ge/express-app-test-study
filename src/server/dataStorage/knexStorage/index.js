@@ -30,14 +30,21 @@ Model.knex(knex);
 // Get data models subclassed from this objection Model
 const models = getModels(Model);
 
+const {
+  userId: userIdLens,
+  updatedAt: updatedAtLens,
+} = Todo.lenses;
+
+const { publicLenses } = User;
+const publicUserLenseSet = Object.values(publicLenses);
+
 /*
  * Define each persistent storage action separately to enable unit testing each
  * function in isolation.
  */
 
 const createTodo = (dbModels, user) => data => {
-  const { userId } = Todo.lenses;
-  const newData = userId.set(data, user.id);
+  const newData = userIdLens.set(data, user.id);
   return createItem(dbModels.Todo, newData);
 };
 
@@ -50,12 +57,11 @@ const getTodoById = (dbModels, user) => id => restrictAccessByUser(user)(
 );
 
 const updateTodoById = (dbModels, user) => async (id, data) => {
-  const { updatedAt } = Todo.lenses;
   const instance = await restrictAccessByUser(user)(
     getItemById(dbModels.Todo, id)
   );
   return instance.$query().updateAndFetch(
-    updatedAt.set(data, currentTimestamp(dbModels.Todo))
+    updatedAtLens.set(data, currentTimestamp(dbModels.Todo))
   );
 };
 
@@ -64,10 +70,8 @@ const deleteTodoById = (dbModels, user) => id => restrictAccessByUser(user)(
 );
 
 const getUsers = (dbModels) => async () => {
-  const { publicLenses } = User;
-  const publicLenseSet = Object.values(publicLenses);
   const users = await getAllItems(dbModels.User);
-  return projectByLenses(publicLenseSet)(users);
+  return projectByLenses(publicUserLenseSet)(users);
 };
 
 const getPasswordByUsername = (dbModels) => async username => {
@@ -76,10 +80,8 @@ const getPasswordByUsername = (dbModels) => async username => {
 };
 
 const getUserByUsername = (dbModels) => async username => {
-  const { publicLenses } = User;
-  const publicLenseSet = Object.values(publicLenses);
   const user = await getItemByProps(dbModels.User, { username });
-  return projectByLenses(publicLenseSet)(user);
+  return projectByLenses(publicUserLenseSet)(user);
 };
 
 /*
