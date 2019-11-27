@@ -1,13 +1,7 @@
-const { defineTodo } = require('./Todo');
-const { defineUser } = require('./User');
-
-const getModels = BaseClass => {
-  return {
-    Todo: defineTodo(BaseClass),
-    User: defineUser(BaseClass),
-  };
-};
+const Todo = require('./Todo');
+const User = require('./User');
 
 module.exports = {
-  getModels,
+  Todo,
+  User,
 };

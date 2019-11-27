@@ -17,7 +17,7 @@ const printUsers = () => tokenPromise.then(
 );
 
 const printTodoById = id => tokenPromise.then(
-  token => client.getTodos(token, id)
+  token => client.getTodoById(token, id)
 ).then(
   ({ data }) => console.log(data)
 );

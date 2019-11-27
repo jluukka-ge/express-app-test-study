@@ -1,17 +1,19 @@
 const { set } = require('../utils/lenses');
 const { pipe } = require('../utils/functions');
 const { BadRequestError } = require('./utils/Errors');
+const { Todo } = require('../models');
 
 const requestIsValid = title => !!title;
 
 const getHandler = getStorage => async (req, res) => {
-  const { createTodo, models: { Todo } } = getStorage(req.__user);
+  const { createTodo } = getStorage(req.__user);
 
   // Get lenses from the Todo model
   const {
-    title: titleLens,
-    description: descriptionLens
-  } = Todo.lenses;
+    titleLens,
+    descriptionLens,
+    getEmptyTodo,
+  } = Todo;
 
   // Assume Todo data to have the same shape over the network as it is in the data model
   const title = titleLens.get(req.body);
@@ -23,7 +25,7 @@ const getHandler = getStorage => async (req, res) => {
   const data = pipe(
     set(titleLens, title),
     set(descriptionLens, description)
-  )({});
+  )(getEmptyTodo());
 
   const newTodo = await createTodo(data);
 

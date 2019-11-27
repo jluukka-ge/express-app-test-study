@@ -1,5 +1,5 @@
-const { USER_TABLE, TODO_TABLE } = require('./../constants/tables');
-const { hashPassword } = require('../src/accounts/password');
+const { USER_TABLE, TODO_TABLE } = require('../constants/tables');
+const { hashPassword } = require('../src/server/accounts/password');
 
 const TEST_PASSWORD = 'test';
 

@@ -1,0 +1,3 @@
+# Routes and Middleware
+
+Defining route and middleware handler functions separete from the Express router enables unit testing the functions. The remaining challenge is to define appropriate mock objects for the `request`, `response`, `error` and `next` parameters provided by the Express framework. for this reason, it is recommended to keep the route handlers as simple as possible, having the handler only extract data from the request, call a domain logic function that does the heavy lifting and can be unit tested well, and finally form a response by calling the functions of the `response` object.

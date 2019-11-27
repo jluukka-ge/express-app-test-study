@@ -1,38 +1,61 @@
 /*
  * Define a client for the Todo app, parameterized over an object which does HTTP calls
  */
-const defineClient = request => {
+const defineClient = requestMethods => {
   const normalizeHost = host => host.endsWith('/') ? host : `${host}/`;
-  const getAuthorizationHeader = token => token ? { Authorization: `Bearer: ${token}` } : {};
+  const getAuthHeader = token => token ? { Authorization: `Bearer: ${token}` } : {};
 
-  // Get convenience functions for defining HTTP calls
-  const getRequestMethods = host => ({
-    get: (path, token) => request.get(`${host}${path}`, { headers: getAuthorizationHeader(token) }),
-    post: (path, body, token) => request.post(`${host}${path}`, body, { headers: getAuthorizationHeader(token) }),
-    put: (path, body, token) => request.put(`${host}${path}`, body, { headers: getAuthorizationHeader(token) }),
-    del: (path, token) => request.delete(`${host}${path}`, { headers: getAuthorizationHeader(token) }),
-  });
+  const getPathWithHost = host => {
+    const _host = normalizeHost(host);
+    return path => `${_host}${path}`;
+  };
 
   // Produce a concrete Todo app client, served from `host`
   const getClient = host => {
-    const _host = normalizeHost(host);
-    const { get, post, put, del } = getRequestMethods(_host);
+    const getFullPath = getPathWithHost(host);
+    const {
+      get: _get,
+      post: _post,
+      put: _put,
+      delete: _delete
+    } = requestMethods;
     return {
-      createTodo: (token, data) => post('todos', data, token),
-      getTodos: token => get('todos', token),
-      getTodoById: (token, id) => get(`todos/${id}`, token),
-      updateTodoById: (token, id, data) => put(`todos/${id}`, data, token),
-      deleteTodoById: (token, id) => del(`todos/${id}`, token),
+      createTodo: (token, data) => _post({
+        path: getFullPath('todos'),
+        data,
+        headers: getAuthHeader(token),
+      }),
+      getTodos: token => _get({
+        path: getFullPath('todos'),
+        headers: getAuthHeader(token),
+      }),
+      getTodoById: (token, id) => _get({
+        path: getFullPath(`todos/${id}`),
+        headers: getAuthHeader(token),
+      }),
+      updateTodoById: (token, id, data) => _put({
+        path: getFullPath(`todos/${id}`),
+        data,
+        headers: getAuthHeader(token),
+      }),
+      deleteTodoById: (token, id) => _delete({
+        path: getFullPath(`todos/${id}`),
+        headers: getAuthHeader(token),
+      }),
 
-      getUsers: token => get('users', token),
+      getUsers: token => _get({
+        path: getFullPath('users'),
+        headers: getAuthHeader(token),
+      }),
 
-      login: (username, password) => post('login', { username, password })
+      login: (username, password) => _post({
+        path: getFullPath('login'),
+        data: { username, password }
+      }),
     };
   };
 
-  return {
-    getClient,
-  };
+  return getClient;
 };
 module.exports = {
   defineClient,

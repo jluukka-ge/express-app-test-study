@@ -5,7 +5,7 @@ const { getRoutes, getMiddleware } = require('./routes');
 const { registerApi } = require('./api');
 const getPromiseRouter = require('express-promise-router');
 
-const defineApp = getStorage => {
+const getApp = getStorage => {
   // Get concrete routes and middleware
   const routes = getRoutes(getStorage);
   const middleware = getMiddleware(getStorage);
@@ -29,5 +29,5 @@ const defineApp = getStorage => {
 };
 
 module.exports = {
-  defineApp,
+  getApp,
 };

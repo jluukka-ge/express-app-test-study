@@ -1,68 +1,63 @@
-# Geniem backend recruit task
+# Todo App Backend - a Study on Testable Design of Code
 
-This is a backend recruit task based on [objection.js typescript example](https://github.com/Vincit/objection.js/tree/master/examples/express-ts)
+This project implements a back-end for a simple web-based Todo app. The primary goal of the project is to explore various ways of improving the testability of code.
 
-This is the beginning of a very simple express todo - app backend that contains two tables, users and todo - items.
+Some common problems when testing back-end applications are:
+- __Invoking application's operations:__ back-end applications are often accessible via network calls, which implies that the app server should be running in order to be tested.
+- __Invoking external services:__ many applications are dependent on external services, which implies that such external services must be running along with the application in order to test the app.
+- __Application state:__ although application state is often implemented using external services, the application state can be considered a separate concern, as it is private to the application. Again, implemented often as an external service implies that these external services must be running in order to test the app.
 
-Feel free to change the folder stucture or the express app setup itself.
+The application incorporates features which are present in most web apps, such as user authentication, but allows some compromises to be made as it is not supposed to be deployed into production (not yet anyway).
 
-The app contains initial data and few example endpoints. 
+## Design Principles
 
-# Basic setup
+In order to isolate parts of the application for testing, these principles are used when writing the application:
+- __Write pure functions__, as they are predictable and portable – hence easy to test.
+- __Write small functions__ that do only one thing. Their edge cases are easy to identify and all branches of execution are easy to test.
+- __Compose larger and complex functions from small functions.__ This way parts of the complex functions are already tested by the tests of the smaller functions. Also, functions composed of only pure functions are also pure.
+- __Write abstractions over external dependencies__ and inject these abstractions to the actual app. This makes it easy to produce similar implementations for testing purposes only.
+- __Assign one responsibility for each component__ and provide domain knowledge of this area only. Any other knowledge should not be a concern of the component.
 
-Make sure you have [NodeJS](https://nodejs.org/en/) and Git installed.
+## Further Notes
 
-1. Clone the repo by running `git@github.com:devgeniem/backend-recruit-task.git`.
-2. Run `npm run setup`. This installs the dependencies, sets up a SQLite db and creates some initial data.
+There are `README.md` files spread across the source files explaining testability concerns and design decisions in the folder. For examples of testing the code, take a look at `*.test.js` files.
 
-# Goals
+## Commands
+### Setup
 
-The basic task is to have a simple API that allows the API consumer to create todos for different users. The challenge is
-that the API should actually recognise the users and only allow a user to operate on the given user's todos.
+```
+// install npm packages and set up DB
+npm run setup
 
-We have provided some basic setup that is required to achieve this: password hashing and checking and token issuing and checking.
-The tokens issued by the token issuer function are by default valid for one hour.
+// Clear DB
+npm run clean
+```
 
-## To get you started
+### Test
 
-Here are some things you should probably consider
-1. The users' password hashes should be stored in the database.
-1. There should be a login mechanism (endpoint) where a user can "log in" with their username and password and receive an access token.
-1. On incoming requests, the user should be identified by the token
-1. You should enforce that a user can not operate on another user's data (the todos).
+```
+// Run linter
+npm run lint
 
-If and when you need to modify the relations, you should probably create a new [knex migration](https://knexjs.org/#Migrations).
+// Run tests once
+npm run test
 
----
-**NOTE about scope and JWTs!**
+// Run tests on file changes
+npm run test-watch
+```
 
-Please note that you're not required to come up with a production-ready authentication/authorization system. A simple system will do.
-For example, you're not required to store a user's token history or provide token renewal methods or anything like that. It is sufficient
-that the API can issue an access token in exchange of a user's credentials, and then it's the client's responsibility to keep that
-token for further use.
+### Run
+```
+// Start app with current source files
+npm run start
 
----
+// Start app with a clean DB
+npm run start-clean
 
-## Criteria
-There are of course many ways you can perform the required task, and you should feel free to use one that you like. However, the core task itself is really quite straightforward. So the judgement is made based mostly on the overall cleanliness (architecture and code) of the solution.
+// start and restart app on file changes
+npm run start-watch
+```
 
-## Extras
+## License
 
-These aren't in any way necessary, but extra points are awarded for the following tasks
-
-1. Create a TodoList model, that the Todos are attached to (and the TodoList is then attached to a User).
-1. Create an endpoint where an entire TodoList can be created at once (with all its Todos).
-1. Host this in heroku or similar platform as a service - provider
-
-
-# Readings
-
-1. [Express.js](https://expressjs.com/)
-1. [Objection.js](https://vincit.github.io/objection.js/).
-1. [Json Web Tokens](jwt.io)
-1. [knex.js](https://knexjs.org/).
-
-# returning your work
-
-To return your work for evaluation, either provide us with a github - link or just email the project back in a zip file.
-
+MIT

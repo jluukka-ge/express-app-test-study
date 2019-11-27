@@ -1,18 +1,20 @@
 const { set } = require('../utils/lenses');
 const { pipe } = require('../utils/functions');
 const { BadRequestError } = require('./utils/Errors');
+const { Todo } = require('../models');
 
 const requestedIdIsValid = id => !!id;
 const todoDataIsValid = title => !!title;
 
 const getHandler = getStorage => async (req, res) => {
-  const { updateTodoById, models: { Todo } } = getStorage(req.__user);
+  const { updateTodoById } = getStorage(req.__user);
 
   // Get lenses from the Todo model
   const {
-    title: titleLens,
-    description: descriptionLens
-  } = Todo.lenses;
+    titleLens,
+    descriptionLens,
+    getEmptyTodo,
+  } = Todo;
 
   const { id } = req.params;
 
@@ -28,7 +30,7 @@ const getHandler = getStorage => async (req, res) => {
   const data = pipe(
     set(titleLens, title),
     set(descriptionLens, description)
-  )({});
+  )(getEmptyTodo());
 
   const updatedTodo = await updateTodoById(id, data);
 

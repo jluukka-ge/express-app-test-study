@@ -1,0 +1,3 @@
+# Accounts Module
+
+The accounts module contains utilities for user authentication. The module contains only pure functions, which should be fairly easy to test. The main challenge for testing is that these utilities rely on encoding algorithms, which makes it difficult to produce appropriate input and understand the output of these functions. However, the functions act as convenience wrappers for well established libraries, so we can have a good level of confidence in the base implementations. We should test that our assumptions about the libraries, their inputs and outputs and the possible branches of our code function as intended.

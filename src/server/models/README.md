@@ -1,0 +1,6 @@
+# Domain Models
+
+The domain models provide services related to object creation, manipulation and validation within this Express app. The intention is to decouple the form of data from program logic. Domain models are also intentionally decoupled from model definitions, which are used to configure DB query instances (see `src/server/dataStorage/knexStorage/models`). These decouplings have the following benefits:
+- The domain model definitions allow us to produce powerful abstractions over data creation, manipulation and validation, leaving the rest of the application free of such concerns. Application logic can then use a declarative form of expressing how data is manipulated. In case the domain model definitions change, the rest of the application does not necessarily need to adjust, thanks to the data manipulation abstractions. This property increases maintainability.
+- Having a single source of truth for all data model definitions – domain models and DB specific models – makes maintenance easier.
+- DB model instances are not manipulated outside their storage abstraction. The abstraction was set up to increase testability of this app by enabling a mock storage being put in place. Leaking DB models outside the storage abstraction violates the original intention.

@@ -15,8 +15,22 @@ const propLens = prop => ({
   set: (o, v) => o && ({ ...o, [prop]: v }),
 });
 
+const projectItemByLenses = lenses => data => {
+  return lenses.reduce((acc, lense) => {
+    return lense.set(acc, lense.get(data));
+  }, {});
+};
+
+const projectArrayByLenses = lenses => items => items.map(projectItemByLenses(lenses));
+
+const projectByLenses = lenses => data =>
+  Array.isArray(data) ? projectArrayByLenses(lenses)(data) : projectItemByLenses(lenses)(data);
+
 module.exports = {
   get,
   set,
   propLens,
+  projectItemByLenses,
+  projectArrayByLenses,
+  projectByLenses,
 };

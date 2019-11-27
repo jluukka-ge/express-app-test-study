@@ -19,6 +19,7 @@ const getMiddleware = getStorage => async (req, res, next) => {
     req.__user = user;
   } catch (e) {
     // Error in validation results in error being thrown and route execution is stopped
+    console.log(e);
     throw new UnauthorizedError('Invalid token!');
   }
   next();

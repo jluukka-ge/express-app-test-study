@@ -1,17 +1,24 @@
-const { tables } = require('../../../constants');
-
-const { propLens } = require('../utils/lenses');
+const { propLens, set } = require('../utils/lenses');
 const { omit } = require('../utils/objects');
+const { pipe } = require('../utils/functions');
 
 // Define lenses (accessors) for this data model
+const idLens = propLens('id');
+const usernameLens = propLens('username');
+const nameLens = propLens('name');
+const lastNameLens = propLens('lastName');
+const passwordLens = propLens('password');
+const createdAtLens = propLens('createdAt');
+const updatedAtLens = propLens('updatedAt');
+
 const lenses = {
-  id: propLens('id'),
-  username: propLens('username'),
-  name:  propLens('name'),
-  lastname: propLens('lastName'),
-  password: propLens('password'),
-  createdAt: propLens('createdAt'),
-  updatedAt: propLens('updatedAt'),
+  id: idLens,
+  username: usernameLens,
+  name: nameLens,
+  lastname: lastNameLens,
+  password: passwordLens,
+  createdAt: createdAtLens,
+  updatedAt: updatedAtLens,
 };
 
 /*
@@ -19,33 +26,46 @@ const lenses = {
  */
 const publicLenses = omit(lenses, 'password');
 
-const defineUser = BaseClass => {
-  class User extends BaseClass {
-    static get tableName() {
-      return tables.USER_TABLE;
-    }
+/*
+ * JSON schema as described by json-schema.org
+ */
+const jsonSchema = {
+  type: 'object',
+  required: ['username'],
 
-    static get jsonSchema() {
-      return {
-        type: 'object',
-        required: ['username'],
-
-        properties: {
-          id: { type: 'integer' },
-          name: { type: 'string', minLength: 1, maxLength: 255 },
-          password: { type: 'string', minLength: 3, maxLength: 255 },
-        },
-      };
-    }
-  }
-  // Allow access to lenses through the data model class
-  User.lenses = lenses;
-  User.publicLenses = publicLenses;
-  return User;
+  properties: {
+    id: { type: 'integer' },
+    name: { type: 'string', minLength: 1, maxLength: 255 },
+    password: { type: 'string', minLength: 3, maxLength: 255 },
+  },
 };
 
+
+/*
+ * Get empty instance of a Todo
+ */
+const getEmptyUser = () => pipe(
+  set(idLens, undefined),
+  set(usernameLens, undefined),
+  set(nameLens, undefined),
+  set(lastNameLens, undefined),
+  set(passwordLens, undefined),
+  set(createdAtLens, undefined),
+  set(updatedAtLens, undefined),
+)({});
+
 module.exports = {
+  idLens,
+  usernameLens,
+  nameLens,
+  lastNameLens,
+  passwordLens,
+  createdAtLens,
+  updatedAtLens,
+
   lenses,
   publicLenses,
-  defineUser,
+
+  jsonSchema,
+  getEmptyUser,
 };

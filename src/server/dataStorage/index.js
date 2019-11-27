@@ -1,3 +1,3 @@
-const { defineStorage } = require('./knexStorage');
+const { getStorageFactory } = require('./knexStorage');
 
-module.exports = { defineStorage };
+module.exports = { getStorageFactory };
