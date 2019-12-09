@@ -4,7 +4,7 @@ Should a back-end only app define a client for it's API? There are benefits for 
 
 1. __The client module can save effort from others.__ In case your reference implementation is written in the target programming language of a client implementer, this client module can be used as is with a high level of confidence.
 1. __The client module acts as documentation.__ For someone implementing a client for the API in a different programming language, it may be beneficial to see a reference implementation. When done well, the reference implementation can clearly express how the API can be called for various purposes.
-1. __The client module can be used in testing the API.__ By using testing tools such as [`supertest`](https://github.com/visionmedia/supertest), it is possible to test parts of the application – middleware, routes, data extraction from the request etc. – without starting up a server.
+1. __The client module can be used in testing the API.__ By using testing tools such as [`supertest`](https://github.com/visionmedia/supertest), it is possible to test parts of the application – middleware, routes, data extraction from the request etc. – without starting up a server. In this client module, `supertest` is used to produce a facade object for mock network calls in other test files. See `src/server/app.test.js` for examples.
 
 This client implementation is split into two files:
 

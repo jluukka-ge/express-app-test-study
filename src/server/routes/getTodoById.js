@@ -10,7 +10,6 @@ const getHandler = getStorage => async (req, res) => {
   if (!requestIsValid(id)) throw new BadRequestError('Invalid TodoID!');
 
   const todo = await getTodoById(id);
-
   if (!resultIsValid(todo)) throw new NotFoundError('No such Todo');
 
   res.send(todo);
@@ -19,5 +18,6 @@ const getHandler = getStorage => async (req, res) => {
 module.exports = {
   requestIsValid,
   resultIsValid,
+  
   getHandler,
 };

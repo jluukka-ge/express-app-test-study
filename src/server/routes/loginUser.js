@@ -13,8 +13,8 @@ const getHandler = getStorage => async (req, res) => {
 
   // Compare password from the request to the one in DB
   const passwordFromDB = await getPasswordByUsername(username);
-  const validLogin = comparePassword(password, passwordFromDB);
 
+  const validLogin = comparePassword(password, passwordFromDB);
   if (!validLogin) throw new BadRequestError('Invalid login credentials!');
 
   // Return a new JWT token
@@ -25,5 +25,6 @@ const getHandler = getStorage => async (req, res) => {
 module.exports = {
   queryIsValid,
   getToken,
+  
   getHandler,
 };

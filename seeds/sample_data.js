@@ -29,7 +29,7 @@ const USER_LIST = [
   }
 ];
 
-exports.seed = async function (knex) {
+const seed = async function (knex) {
   const { hash } = await hashPassword(TEST_PASSWORD);
   await knex(USER_TABLE).insert(USER_LIST.map(user => ({ ...user, password: hash })));
   const users = await knex(USER_TABLE).select('*');
@@ -46,4 +46,11 @@ exports.seed = async function (knex) {
   });
   await Promise.all(promises);
   console.log('seed done');
+};
+
+module.exports = {
+  TODO_LIST,
+  USER_LIST,
+
+  seed,
 };
