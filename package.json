@@ -1,5 +1,5 @@
 {
-  "name": "todo-app-api",
+  "name": "express-app-test-study",
   "version": "0.0.1-beta",
   "description": "A study on various test possibilities on a simple todo app REST api",
   "scripts": {
